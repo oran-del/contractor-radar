@@ -13,6 +13,7 @@
     gone_quiet: "Gone quiet", new_activity: "New activity", none: "No recent permits"
   };
   var WINDOWS = { n30: "Last 30 days", n90: "Last 90 days", n12: "Last 12 months" };
+  var VIEW_TITLES = { leaderboard: "Leaderboard", "new": "New contractors this month", search: "Search", c: "Contractor profile" };
   var S = { meta: null, idx: {}, shards: {}, norm: {}, tradeIds: [], tradeLabel: {}, route: null, shown: PAGE, lastRows: null };
 
   // ------------------------------------------------------------------ helpers
@@ -51,9 +52,11 @@
     if (pct < 0) return { cls: "down", text: "▼ " + Math.abs(pct) + "%", label: "down " + Math.abs(pct) + " percent", pct: pct };
     return { cls: "flat", text: "0%", label: "no change", pct: 0 };
   }
-  function momHTML(n90, p90) {
+  /* Arrow + percent for the eye, plain words for screen readers ("up 18 percent"). */
+  function momHTML(n90, p90, spokenSuffix, style) {
     var m = momentum(n90, p90);
-    return '<span class="mom ' + m.cls + '" aria-label="' + esc(m.label) + '">' + esc(m.text) + "</span>";
+    return '<span class="mom ' + m.cls + '"' + (style ? ' style="' + style + '"' : "") + '><span aria-hidden="true">' + esc(m.text) +
+      '</span><span class="sr-only">' + esc(m.label + (spokenSuffix || "")) + "</span></span>";
   }
 
   // ------------------------------------------------------------------ routing
@@ -170,15 +173,13 @@
 
   // ------------------------------------------------------------------ city header
   function renderCityHeader(cm, ix) {
-    document.title = cm.name + " contractors: Contractor Radar";
     $("#city-title").textContent = cm.name + ", " + cm.state;
     $("#city-sub").innerHTML = "Data as of <strong>" + esc(day(cm.as_of)) + "</strong> &middot; issued permits " +
       esc(day(cm.window.start)) + " to " + esc(day(cm.window.end)) + " &middot; " + esc(cm.pct_with_contractor) + "% name a contractor";
     var st = ix.stats;
-    var m = momentum(st.permits_last90, st.permits_prior90);
     $("#kpis").innerHTML = [
       ["Permits, last 12 months", fmt.format(st.permits)],
-      ["Permits, last 90 days", fmt.format(st.permits_last90) + ' <span class="mom ' + m.cls + '" style="font-size:15px" aria-label="' + esc(m.label) + ' versus the prior 90 days">' + esc(m.text) + "</span>"],
+      ["Permits, last 90 days", fmt.format(st.permits_last90) + " " + momHTML(st.permits_last90, st.permits_prior90, " versus the prior 90 days", "font-size:15px")],
       ["Contractors active, 12 months", fmt.format(st.contractors)],
       ["New contractors this month", fmt.format(st.new_this_month)]
     ].map(function (k) { return '<div class="kpi"><b>' + k[1] + "</b><span>" + esc(k[0]) + "</span></div>"; }).join("");
@@ -318,9 +319,9 @@
     }
     var sortCol = r.sort === "most" ? r.win : "n90";
     function th(label, col, extra) {
-      return '<th scope="col" class="n' + (extra || "") + '"' + (col === sortCol ? ' aria-sort="descending"' : "") + ">" + label + (col === sortCol ? " \u2193" : "") + "</th>";
+      return '<th scope="col" class="n' + (extra || "") + '"' + (col === sortCol ? ' aria-sort="descending"' : "") + ">" + label + (col === sortCol ? '<span aria-hidden="true"> \u2193</span>' : "") + "</th>";
     }
-    h += '<div class="table-wrap"><table><caption class="sr-only">Contractor leaderboard for ' + esc(filterLabel(r.f)) + "</caption><thead><tr>" +
+    h += tableWrap("Leaderboard table") + '<table><caption class="sr-only">Contractor leaderboard for ' + esc(filterLabel(r.f)) + "</caption><thead><tr>" +
       '<th scope="col" class="n">#</th><th scope="col">Contractor</th><th scope="col" class="hide-sm">Main trade</th>' +
       (r.win === "n30" ? th("Last 30 d", "n30") : "") + th("12 mo", "n12", " hide-sm") + th("Last 90 d", "n90") + th("Prior 90 d", "p90", " hide-sm") +
       '<th scope="col" class="n">Momentum</th><th scope="col" class="hide-sm">Top ZIP</th></tr></thead><tbody>';
@@ -337,6 +338,11 @@
     $("#view").innerHTML = h;
     bindMore();
     announce(fmt.format(r.list.length) + " contractors match " + filterLabel(r.f) + ".");
+  }
+
+  /* Tables scroll sideways on narrow screens and at high zoom, so the wrapper must take keyboard focus. */
+  function tableWrap(name) {
+    return '<div class="table-wrap" tabindex="0" role="region" aria-label="' + esc(name + ", scrolls sideways") + '">';
   }
 
   function moreControls(total) {
@@ -376,7 +382,7 @@
       announce("No new contractors match.");
       return;
     }
-    h += '<div class="table-wrap"><table><caption class="sr-only">New contractors this month, ' + esc(filterLabel(r.f)) + "</caption><thead><tr>" +
+    h += tableWrap("New contractors table") + '<table><caption class="sr-only">New contractors this month, ' + esc(filterLabel(r.f)) + "</caption><thead><tr>" +
       '<th scope="col">Contractor</th><th scope="col">First permit</th><th scope="col" class="n">Permits, last 30 d</th><th scope="col" class="hide-sm">Main trade</th><th scope="col" class="hide-sm">Top ZIP</th></tr></thead><tbody>';
     r.list.slice(0, S.shown).forEach(function (ci) {
       var row = ix.c[ci];
@@ -420,7 +426,7 @@
       announce("No matches.");
       return;
     }
-    h += '<div class="table-wrap"><table><caption class="sr-only">Search results</caption><thead><tr><th scope="col">Contractor</th><th scope="col" class="n">Permits, 12 mo</th>' +
+    h += tableWrap("Search results table") + '<table><caption class="sr-only">Search results</caption><thead><tr><th scope="col">Contractor</th><th scope="col" class="n">Permits, 12 mo</th>' +
       '<th scope="col" class="n">Last 90 d</th><th scope="col" class="hide-sm">Main trade</th><th scope="col" class="hide-sm">On record</th><th scope="col" class="hide-sm">Last permit</th></tr></thead><tbody>';
     r.list.slice(0, S.shown).forEach(function (ci) {
       var row = ix.c[ci];
@@ -450,7 +456,6 @@
       var months = ix.months;
       var active = p.months.filter(function (x) { return x > 0; }).length;
       var partial = cm.as_of.slice(0, 7) === months[months.length - 1];
-      var mom = momentum(p.n90, p.p90);
       var topTrade = p.trades[0];
       var tradeShare = Math.round(100 * topTrade[1] / p.n12);
       var row = ix.c[ci];
@@ -461,7 +466,7 @@
         '<div class="actions" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-small" type="button" id="csv-jobs">Jobs CSV</button><button class="btn btn-small" type="button" id="csv-months">Monthly CSV</button></div></div>';
       h += '<div class="kpis">' + [
         [fmt.format(p.n12), "permits, last 12 months"],
-        [fmt.format(p.n90) + ' <span class="mom ' + mom.cls + '" style="font-size:15px" aria-label="' + esc(mom.label) + ' versus prior 90 days">' + esc(mom.text) + "</span>", "permits, last 90 days (prior 90: " + fmt.format(p.p90) + ")"],
+        [fmt.format(p.n90) + " " + momHTML(p.n90, p.p90, " versus prior 90 days", "font-size:15px"), "permits, last 90 days (prior 90: " + fmt.format(p.p90) + ")"],
         [active + " / " + months.length, "months with at least one permit"],
         [fmt.format(p.zip_count), "ZIP codes worked in"]
       ].map(function (k) { return '<div class="kpi"><b>' + k[0] + "</b><span>" + esc(k[1]) + "</span></div>"; }).join("") + "</div>";
@@ -481,7 +486,7 @@
         (p.variants.length > 1 ? "<li>Also recorded as: " + p.variants.slice(1).map(esc).join("; ") + "</li>" : "") +
         (p.also_in.length ? "<li>Same name also on permits in (may be a different company): " + p.also_in.map(function (c) { var o = cityMeta(c); return o ? '<a href="' + href(c, "c", null, key) + '">' + esc(o.name) + "</a>" : ""; }).join(", ") + "</li>" : "") +
         "</ul></div></div>";
-      h += '<h3 style="margin-top:22px">Most recent permits</h3><div class="table-wrap"><table><caption class="sr-only">Most recent permits for ' + esc(p.name) + "</caption><thead><tr>" +
+      h += '<h3 style="margin-top:22px">Most recent permits</h3>' + tableWrap("Recent permits table") + '<table><caption class="sr-only">Most recent permits for ' + esc(p.name) + "</caption><thead><tr>" +
         '<th scope="col">Issued</th><th scope="col">Trade</th><th scope="col">ZIP</th><th scope="col">Work description (as filed)</th><th scope="col" class="n hide-sm">Declared value</th><th scope="col" class="hide-sm">Permit</th></tr></thead><tbody>';
       p.recent.forEach(function (j) {
         h += "<tr><td style=\"white-space:nowrap\">" + esc(day(j[0])) + "</td><td>" + esc(S.tradeLabel[S.tradeIds[j[1]]]) + '</td><td class="mono">' + esc(j[2]) + "</td><td>" + esc(j[3]) +
@@ -562,6 +567,7 @@
   }
 
   function showError(err) {
+    $("#view").classList.remove("pending");
     $("#view").innerHTML = '<div class="notice error"><p><strong>Couldn\'t load the data.</strong> ' + esc(err && err.message) +
       "</p><p>If you opened this file directly from disk, serve the folder instead: <span class=\"mono\">cd site &amp;&amp; python3 -m http.server</span> and open http://localhost:8000/app.html</p></div>";
   }
@@ -581,12 +587,25 @@
     renderTabs(route);
     loadCity(route.city).then(function (ix) {
       if (S.route !== route) return;
-      renderCityHeader(cityMeta(route.city), ix);
-      var hadFocus = document.activeElement && document.activeElement.id === "q";
+      var cm = cityMeta(route.city);
+      renderCityHeader(cm, ix);
+      document.title = VIEW_TITLES[route.view] + " \u2013 " + cm.name + " \u2013 Contractor Radar";
+      // Re-rendering replaces the filter controls; put focus back on whichever control had it (same id).
+      var ae = document.activeElement;
+      var focusId = ae && ae !== document.body && ae.id ? ae.id : null;
+      var inFilters = !!(ae && $("#filters").contains(ae));
       renderFilters(route, ix);
-      if (hadFocus && $("#q")) { var q = $("#q"); q.focus(); q.setSelectionRange(q.value.length, q.value.length); }
       if (route.view === "c") S.focusProfile = true;
       renderView(route, ix);
+      $("#filters").classList.remove("pending");
+      $("#view").classList.remove("pending");
+      // A filter control without an id (the Clear link) is gone after re-rendering: fall back to the first filter.
+      var el = (focusId && document.getElementById(focusId)) ||
+        (inFilters && !document.body.contains(ae) ? $("#filters select, #filters input") : null);
+      if (el && el !== document.activeElement) {
+        el.focus();
+        if (el.tagName === "INPUT") { try { el.setSelectionRange(el.value.length, el.value.length); } catch (e) { /* not a text input */ } }
+      }
     }).catch(showError);
   }
 

@@ -3,20 +3,202 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contractor Radar</title>
-<meta name="description" content="See who is actually building in your city. Contractor-level permit activity, momentum and new entrants from official city permit data in Austin, Chicago, New York City and Seattle.">
+<title>Contractor Permit Lookup &amp; Building Permit Leaderboards</title>
+<meta name="description" content="Look up any contractor's permit history and see who is busiest in Austin, Chicago, NYC and Seattle. Free, from official city data, refreshed weekly.">
+<link rel="canonical" href="https://oran-del.github.io/contractor-radar/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Contractor Radar">
+<meta property="og:title" content="Contractor Permit Lookup &amp; Building Permit Leaderboards">
+<meta property="og:description" content="Look up any contractor's permit history and see who is busiest in Austin, Chicago, NYC and Seattle. Free, from official city data, refreshed weekly.">
+<meta property="og:url" content="https://oran-del.github.io/contractor-radar/">
+<meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231B1D1F'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23E8590C' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%23E8590C' stroke-width='2'/%3E%3Cpath d='M16 16 L25 9' stroke='%23FFD84D' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/archivo@5/wdth.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5/400.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5/600.css">
-<link rel="stylesheet" href="assets/style.css?v=20261109T021140">
+<link rel="stylesheet" href="assets/style.css?v=20261109T233740">
+<!--JSONLD--><script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebSite",
+   "@id": "https://oran-del.github.io/contractor-radar/#website",
+   "name": "Contractor Radar",
+   "url": "https://oran-del.github.io/contractor-radar/",
+   "description": "Look up any contractor's permit history and see who is busiest in Austin, Chicago, NYC and Seattle. Free, from official city data, refreshed weekly.",
+   "inLanguage": "en-US"
+  },
+  {
+   "@type": "Dataset",
+   "name": "Austin, TX building permits by contractor",
+   "description": "Permits issued by the City of Austin between 1 Nov 2025 and 7 Nov 2026, counted by contractor: 57,261 permits, 51,804 of them naming one of 4,952 contractors. For each contractor: permits in the last 30 days, 90 days and 12 months by trade and ZIP code, 90-day momentum, and whether it is new this month. Built weekly by Contractor Radar from the city's official open-data portal (data.austintexas.gov). Homeowner names, owner contact details and street addresses are not included.",
+   "url": "https://oran-del.github.io/contractor-radar/app.html#/austin/leaderboard",
+   "isBasedOn": [
+    {
+     "@type": "Dataset",
+     "name": "Issued Construction Permits",
+     "identifier": "3syk-w9eu",
+     "url": "https://data.austintexas.gov/d/3syk-w9eu",
+     "publisher": {
+      "@type": "GovernmentOrganization",
+      "name": "City of Austin"
+     }
+    }
+   ],
+   "temporalCoverage": "2025-11-01/2026-11-07",
+   "dateModified": "2026-11-07",
+   "spatialCoverage": {
+    "@type": "Place",
+    "name": "Austin, TX"
+   },
+   "isAccessibleForFree": true,
+   "creator": {
+    "@type": "Organization",
+    "name": "Contractor Radar",
+    "url": "https://oran-del.github.io/contractor-radar/"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "name": "Chicago, IL building permits by contractor",
+   "description": "Permits issued by the City of Chicago between 1 Nov 2025 and 6 Nov 2026, counted by contractor: 32,069 permits, 31,170 of them naming one of 6,811 contractors. For each contractor: permits in the last 30 days, 90 days and 12 months by trade and ZIP code, 90-day momentum, and whether it is new this month. Built weekly by Contractor Radar from the city's official open-data portal (data.cityofchicago.org). Homeowner names, owner contact details and street addresses are not included.",
+   "url": "https://oran-del.github.io/contractor-radar/app.html#/chicago/leaderboard",
+   "isBasedOn": [
+    {
+     "@type": "Dataset",
+     "name": "Boundaries - ZIP Codes",
+     "identifier": "rpca-8um6",
+     "url": "https://data.cityofchicago.org/d/rpca-8um6",
+     "publisher": {
+      "@type": "GovernmentOrganization",
+      "name": "City of Chicago"
+     }
+    },
+    {
+     "@type": "Dataset",
+     "name": "Building Permits",
+     "identifier": "ydr8-5enu",
+     "url": "https://data.cityofchicago.org/d/ydr8-5enu",
+     "publisher": {
+      "@type": "GovernmentOrganization",
+      "name": "City of Chicago"
+     }
+    }
+   ],
+   "temporalCoverage": "2025-11-01/2026-11-06",
+   "dateModified": "2026-11-06",
+   "spatialCoverage": {
+    "@type": "Place",
+    "name": "Chicago, IL"
+   },
+   "isAccessibleForFree": true,
+   "creator": {
+    "@type": "Organization",
+    "name": "Contractor Radar",
+    "url": "https://oran-del.github.io/contractor-radar/"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "name": "New York City, NY building permits by contractor",
+   "description": "Permits issued by the City of New York between 1 Nov 2025 and 7 Nov 2026, counted by contractor: 149,742 permits, 149,653 of them naming one of 9,510 contractors. For each contractor: permits in the last 30 days, 90 days and 12 months by trade and ZIP code, 90-day momentum, and whether it is new this month. Built weekly by Contractor Radar from the city's official open-data portal (data.cityofnewyork.us). Homeowner names, owner contact details and street addresses are not included.",
+   "url": "https://oran-del.github.io/contractor-radar/app.html#/nyc/leaderboard",
+   "isBasedOn": [
+    {
+     "@type": "Dataset",
+     "name": "DOB NOW: Electrical Permit Applications",
+     "identifier": "dm9a-ab7w",
+     "url": "https://data.cityofnewyork.us/d/dm9a-ab7w",
+     "publisher": {
+      "@type": "GovernmentOrganization",
+      "name": "City of New York"
+     }
+    },
+    {
+     "@type": "Dataset",
+     "name": "DOB NOW: Build – Approved Permits",
+     "identifier": "rbx6-tga4",
+     "url": "https://data.cityofnewyork.us/d/rbx6-tga4",
+     "publisher": {
+      "@type": "GovernmentOrganization",
+      "name": "City of New York"
+     }
+    }
+   ],
+   "temporalCoverage": "2025-11-01/2026-11-07",
+   "dateModified": "2026-11-07",
+   "spatialCoverage": {
+    "@type": "Place",
+    "name": "New York City, NY"
+   },
+   "isAccessibleForFree": true,
+   "creator": {
+    "@type": "Organization",
+    "name": "Contractor Radar",
+    "url": "https://oran-del.github.io/contractor-radar/"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "name": "Seattle, WA building permits by contractor",
+   "description": "Permits issued by the City of Seattle between 1 Nov 2025 and 7 Nov 2026, counted by contractor: 51,714 permits, 37,772 of them naming one of 1,790 contractors. For each contractor: permits in the last 30 days, 90 days and 12 months by trade and ZIP code, 90-day momentum, and whether it is new this month. Built weekly by Contractor Radar from the city's official open-data portal (data.seattle.gov). Homeowner names, owner contact details and street addresses are not included.",
+   "url": "https://oran-del.github.io/contractor-radar/app.html#/seattle/leaderboard",
+   "isBasedOn": [
+    {
+     "@type": "Dataset",
+     "name": "Building Permits",
+     "identifier": "76t5-zqzr",
+     "url": "https://data.seattle.gov/d/76t5-zqzr",
+     "publisher": {
+      "@type": "GovernmentOrganization",
+      "name": "City of Seattle"
+     }
+    },
+    {
+     "@type": "Dataset",
+     "name": "Electrical Permits",
+     "identifier": "c4tj-daue",
+     "url": "https://data.seattle.gov/d/c4tj-daue",
+     "publisher": {
+      "@type": "GovernmentOrganization",
+      "name": "City of Seattle"
+     }
+    },
+    {
+     "@type": "Dataset",
+     "name": "Trade Permits",
+     "identifier": "c87v-5hwh",
+     "url": "https://data.seattle.gov/d/c87v-5hwh",
+     "publisher": {
+      "@type": "GovernmentOrganization",
+      "name": "City of Seattle"
+     }
+    }
+   ],
+   "temporalCoverage": "2025-11-01/2026-11-07",
+   "dateModified": "2026-11-07",
+   "spatialCoverage": {
+    "@type": "Place",
+    "name": "Seattle, WA"
+   },
+   "isAccessibleForFree": true,
+   "creator": {
+    "@type": "Organization",
+    "name": "Contractor Radar",
+    "url": "https://oran-del.github.io/contractor-radar/"
+   }
+  }
+ ]
+}
+</script><!--/JSONLD-->
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Contractor Radar home">
+    <a class="brand" href="./" aria-label="Contractor Radar home">
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="4" fill="currentColor"/><circle cx="16" cy="16" r="11" fill="none" stroke="#E8590C" stroke-width="2"/><circle cx="16" cy="16" r="5" fill="none" stroke="#E8590C" stroke-width="2"/><path d="M16 16 L25 9" stroke="#FFD84D" stroke-width="2.5" stroke-linecap="round"/></svg>
       Contractor Radar
     </a>
@@ -198,6 +380,6 @@
     <p><a href="app.html">Open the radar</a> &middot; <a href="#plans">Plans</a> &middot; <a href="#limits">Limits</a> &middot; <a href="#faq">FAQ</a></p>
   </div>
 </footer>
-<script src="assets/home.js?v=20261109T021140" defer></script>
+<script src="assets/home.js?v=20261109T233740" defer></script>
 </body>
 </html>

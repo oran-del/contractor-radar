@@ -3,28 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contractor Radar: the radar</title>
+<title>Contractors Ranked by Building Permits – Contractor Radar</title>
 <meta name="description" content="Search contractors, see permit leaderboards by trade and ZIP, momentum and new contractors this month, from official city permit data.">
+<link rel="canonical" href="https://oran-del.github.io/contractor-radar/app.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Contractor Radar">
+<meta property="og:title" content="Contractors Ranked by Building Permits – Contractor Radar">
+<meta property="og:description" content="Search contractors, see permit leaderboards by trade and ZIP, momentum and new contractors this month, from official city permit data.">
+<meta property="og:url" content="https://oran-del.github.io/contractor-radar/app.html">
+<meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231B1D1F'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23E8590C' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%23E8590C' stroke-width='2'/%3E%3Cpath d='M16 16 L25 9' stroke='%23FFD84D' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/archivo@5/wdth.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5/400.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5/600.css">
-<link rel="stylesheet" href="assets/style.css?v=20261109T021140">
+<link rel="stylesheet" href="assets/style.css?v=20261109T233740">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Contractor Radar home">
+    <a class="brand" href="./" aria-label="Contractor Radar home">
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="4" fill="currentColor"/><circle cx="16" cy="16" r="11" fill="none" stroke="#E8590C" stroke-width="2"/><circle cx="16" cy="16" r="5" fill="none" stroke="#E8590C" stroke-width="2"/><path d="M16 16 L25 9" stroke="#FFD84D" stroke-width="2.5" stroke-linecap="round"/></svg>
       Contractor Radar
     </a>
     <nav class="nav" aria-label="Main">
-      <a href="index.html">Home</a>
+      <a href="./">Home</a>
       <a href="app.html" aria-current="page">The radar</a>
-      <a href="index.html#plans">Weekly alerts</a>
-      <a href="index.html#limits">Limits</a>
+      <a href="./#plans">Weekly alerts</a>
+      <a href="./#limits">Limits</a>
     </nav>
   </div>
 </header>
@@ -44,9 +51,15 @@
       </div>
     </div>
     <div class="wrap">
-      <div class="kpis" id="kpis" aria-label="City summary"></div>
+      <h2 class="sr-only">City overview</h2>
+      <div class="kpis" id="kpis" aria-label="City summary">
+        <div class="kpi"><b aria-hidden="true">&ndash;</b><span>Permits, last 12 months</span></div>
+        <div class="kpi"><b aria-hidden="true">&ndash;</b><span>Permits, last 90 days</span></div>
+        <div class="kpi"><b aria-hidden="true">&ndash;</b><span>Contractors active, 12 months</span></div>
+        <div class="kpi"><b aria-hidden="true">&ndash;</b><span>New contractors this month</span></div>
+      </div>
       <div class="city-chart-row">
-        <div class="chart-box"><h3 id="city-chart-title">Permits issued per month</h3><div class="chart" id="city-chart"></div></div>
+        <div class="chart-box"><h3 id="city-chart-title">Permits issued per month (last bar: month to date)</h3><div class="chart" id="city-chart"></div></div>
         <div class="chart-box"><h3>Busiest trades, last 90 days</h3><ul class="hbars" id="city-trades"></ul></div>
       </div>
     </div>
@@ -58,14 +71,14 @@
       <a href="#" data-view="new">New this month</a>
       <a href="#" data-view="search">Search a contractor</a>
     </nav>
-    <div id="filters"></div>
+    <div id="filters" class="pending"></div>
     <p id="status" class="sr-only" aria-live="polite"></p>
-    <div id="view"><p class="notice">Loading the radar&hellip;</p></div>
+    <div id="view" class="pending"><p class="notice">Loading the radar&hellip;</p></div>
 
     <section class="block" aria-labelledby="src-title">
       <h2 id="src-title">Data sources</h2>
       <div id="sources" class="muted"></div>
-      <p class="muted">Want this every Monday, filtered to your trades and ZIP codes? <a href="index.html#plans">See the weekly alert plans</a>.</p>
+      <p class="muted">Want this every Monday, filtered to your trades and ZIP codes? <a href="./#plans">See the weekly alert plans</a>.</p>
     </section>
   </div>
 </main>
@@ -73,9 +86,9 @@
 <footer class="site-footer">
   <div class="wrap">
     <p><strong>Contractor Radar</strong> &middot; <!--ASOF-->Data as of 6 Nov 2026 – 7 Nov 2026<!--/ASOF--> &middot; Permit counts from official city open data. Homeowner names, owner contact details and street addresses are never shown. Not a licence check or an endorsement.</p>
-    <p><a href="index.html">Home</a> &middot; <a href="index.html#limits">Honest limits</a> &middot; <a href="index.html#faq">FAQ</a></p>
+    <p><a href="./">Home</a> &middot; <a href="./#limits">Honest limits</a> &middot; <a href="./#faq">FAQ</a></p>
   </div>
 </footer>
-<script src="assets/app.js?v=20261109T021140" defer></script>
+<script src="assets/app.js?v=20261109T233740" defer></script>
 </body>
 </html>

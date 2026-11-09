@@ -185,6 +185,12 @@ td a { font-weight: 650; }
 .chart .val { fill: var(--ink); font: 11px var(--font-mono); }
 .chart .base { stroke: var(--line); }
 .city-chart-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; padding-bottom: 20px; }
+/* Reserve the space that data fills in after load, so nothing jumps (layout shift). The KPI tiles are
+   placeholders in app.html; the chart keeps its SVG's 640x190 shape; the trade list holds 8 rows. */
+#city-chart { aspect-ratio: 640 / 190; }
+#city-trades { min-height: calc(8 * (15px * 1.55 + 8px)); }
+#view.pending { min-height: 100vh; }
+@media (min-width: 901px) { #filters.pending { min-height: 102px; } }
 
 /* profile */
 .profile-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: start; margin-top: 20px; }
@@ -212,6 +218,7 @@ td a { font-weight: 650; }
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .city-chart-row, .profile-grid, .profile-head { grid-template-columns: 1fr; }
   .app-top .app-head { grid-template-columns: 1fr; }
+  #city-sub { min-height: 3.1em; }
 }
 @media (max-width: 520px) {
   body { font-size: 16px; }
@@ -222,7 +229,7 @@ td a { font-weight: 650; }
   th, td { padding: 8px 8px; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .sweep { transform-origin: 100px 100px; animation: sweep 6s linear infinite; }
+  .sweep { transform-origin: 100px 100px; animation: sweep 6s linear 3; }
   @keyframes sweep { to { transform: rotate(360deg); } }
 }
 @media print {
