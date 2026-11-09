@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contractor Radar</title>
+<meta name="description" content="See who is actually building in your city. Contractor-level permit activity, momentum and new entrants from official city permit data in Austin, Chicago, New York City and Seattle.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231B1D1F'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23E8590C' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%23E8590C' stroke-width='2'/%3E%3Cpath d='M16 16 L25 9' stroke='%23FFD84D' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/archivo@5/wdth.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5/600.css">
+<link rel="stylesheet" href="assets/style.css?v=20261109T021140">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Contractor Radar home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="4" fill="currentColor"/><circle cx="16" cy="16" r="11" fill="none" stroke="#E8590C" stroke-width="2"/><circle cx="16" cy="16" r="5" fill="none" stroke="#E8590C" stroke-width="2"/><path d="M16 16 L25 9" stroke="#FFD84D" stroke-width="2.5" stroke-linecap="round"/></svg>
+      Contractor Radar
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="app.html">Open the radar</a>
+      <a href="#who">Who it's for</a>
+      <a href="#plans">Plans</a>
+      <a href="#limits">Limits</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Official city permit records &middot; Austin &middot; Chicago &middot; New York City &middot; Seattle</p>
+        <h1 id="hero-title">See who's actually building in your city.</h1>
+        <p class="lede">Contractor Radar turns raw building, electrical, plumbing and mechanical permits into a contractor-by-contractor picture: who is pulling permits, in which trades and ZIP codes, who is speeding up, and who just showed up.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="app.html">Open the free radar</a>
+          <a class="btn" href="#plans">Weekly alerts from $49/mo</a>
+        </div>
+        <p class="muted"><span class="stamp"><!--ASOF-->Data as of 6 Nov 2026 – 7 Nov 2026<!--/ASOF--></span> &nbsp;Refreshed every Monday.</p>
+      </div>
+      <svg class="radar-art" viewBox="0 0 200 200" role="img" aria-label="Illustration: a radar sweep over a city grid">
+        <defs>
+          <radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E8590C" stop-opacity=".35"/><stop offset="1" stop-color="#E8590C" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="96" fill="var(--card)" stroke="currentColor" stroke-width="2"/>
+        <g fill="none" stroke="var(--line)" stroke-width="1"><circle cx="100" cy="100" r="72"/><circle cx="100" cy="100" r="48"/><circle cx="100" cy="100" r="24"/><path d="M4 100H196M100 4V196"/></g>
+        <g class="sweep"><path d="M100 100 L100 4 A96 96 0 0 1 183 52 Z" fill="url(#g)"/><path d="M100 100 L183 52" stroke="#E8590C" stroke-width="2.5"/></g>
+        <g fill="#E8590C"><circle cx="140" cy="62" r="4"/><circle cx="58" cy="132" r="3"/><circle cx="124" cy="146" r="3"/></g>
+        <g fill="#FFD84D" stroke="#1B1D1F" stroke-width="1.5"><circle cx="70" cy="70" r="5"/></g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="ticker" aria-label="Live numbers by city">
+    <ul id="ticker">
+      <li><span class="city">Loading cities&hellip;</span><small>Numbers come from data/meta.json</small></li>
+    </ul>
+  </section>
+
+  <div class="wrap">
+    <section class="block" aria-labelledby="vet-title">
+      <div class="vet">
+        <h2 id="vet-title">Vetting a contractor? Look up their real permit history.</h2>
+        <p class="muted">Free. See how many permits a company actually pulled in the last 12 months, in which trades and ZIP codes, and whether it's established or brand new to the city's records.</p>
+        <form id="vet-form" action="app.html" method="get">
+          <div class="row">
+            <div class="field">
+              <label for="vet-city">City</label>
+              <select id="vet-city" name="city">
+                <option value="austin">Austin, TX</option>
+                <option value="chicago">Chicago, IL</option>
+                <option value="nyc">New York City, NY</option>
+                <option value="seattle">Seattle, WA</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="vet-q">Contractor or company name</label>
+              <input id="vet-q" name="q" type="search" autocomplete="off" placeholder="e.g. Radiant Plumbing" required minlength="2">
+            </div>
+          </div>
+          <div><button class="btn btn-primary" type="submit">Search permit history</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="what-title">
+      <h2 id="what-title">What it is</h2>
+      <div class="cards">
+        <div class="card"><p class="who">Leaderboards</p><h3>Who is pulling the most permits</h3><p>Rank every contractor in a city by permits in the last 30 days, 90 days or 12 months, filtered by trade and ZIP code.</p></div>
+        <div class="card"><p class="who">Momentum</p><h3>Who is speeding up or going quiet</h3><p>Last 90 days against the prior 90, per contractor. Spot the shop that just doubled its volume before your competitors do.</p></div>
+        <div class="card"><p class="who">New entrants</p><h3>Who just showed up</h3><p>Contractors whose first permit in the past 12 months landed in the last 30 days: new LLCs, out-of-town firms, crews going out on their own.</p></div>
+        <div class="card"><p class="who">Profiles</p><h3>One page per contractor</h3><p>Monthly permit chart, trade mix, top ZIP codes, recent jobs and declared job values where the city records them.</p></div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="signals-title">
+      <h2 id="signals-title">On the radar this week</h2>
+      <p class="muted">Pulled straight from the latest build. Counts are permits issued by the city.</p>
+      <div class="signals" id="signals"><p class="notice">Loading this week's signals&hellip;</p></div>
+    </section>
+
+    <section class="block" id="who" aria-labelledby="who-title">
+      <h2 id="who-title">Who it's for</h2>
+      <div class="cards">
+        <div class="card"><p class="who">Supply houses &amp; distributors</p><h3>Call the shops that are busy now</h3><p>Electrical, plumbing, HVAC and roofing contractors ranked by recent permits near your branch, plus the new ones before they've picked a supplier.</p></div>
+        <div class="card"><p class="who">Equipment rental yards</p><h3>Catch the ramp-up</h3><p>GCs, site and structural contractors whose 90-day permit count is climbing usually need equipment next.</p></div>
+        <div class="card"><p class="who">Concrete, lumber &amp; aggregates</p><h3>Follow new construction</h3><p>New-build and foundation permits by contractor and ZIP, every week.</p></div>
+        <div class="card"><p class="who">Insurance, bonding &amp; surety</p><h3>Check activity, spot new entities</h3><p>See an applicant's real permit volume and trade mix, and get a list of brand-new contractors to quote.</p></div>
+        <div class="card"><p class="who">Staffing &amp; trade labour</p><h3>Find who needs crews</h3><p>A contractor that went from 10 permits to 40 in a quarter is hiring, or about to be.</p></div>
+        <div class="card"><p class="who">Lenders &amp; equipment finance</p><h3>Workload as a signal</h3><p>Permit history is an independent read on how much work a contractor is actually doing.</p></div>
+        <div class="card"><p class="who">Contractors</p><h3>Watch your competitors</h3><p>Who is winning work in your trade and your ZIPs, and who just entered your market.</p></div>
+        <div class="card"><p class="who">Homeowners (free)</p><h3>Vet before you hire</h3><p>Is this company established in your city or new to it? Does it really do roofs, or mostly electrical? Look before you sign.</p></div>
+      </div>
+    </section>
+
+    <section class="block" id="plans" aria-labelledby="plans-title">
+      <h2 id="plans-title">Plans</h2>
+      <p class="muted">The radar is free to search. Paid plans put it in your inbox every Monday, filtered to the trades and ZIP codes you sell into.</p>
+      <!-- SUBSCRIBE LINKS: the only place checkout links live. Replace the two LINK_ placeholders in the hrefs below (see RUNBOOK.md, "Publishing"). -->
+      <div class="plans">
+        <div class="plan">
+          <h3>Free radar</h3>
+          <p class="price">$0</p>
+          <ul>
+            <li>Search any contractor's permit history</li>
+            <li>City leaderboards by trade and ZIP</li>
+            <li>New contractors this month</li>
+            <li>Contractor profiles with monthly chart</li>
+            <li>CSV of whatever you're viewing</li>
+          </ul>
+          <a class="btn" href="app.html">Open the radar</a>
+        </div>
+        <div class="plan featured">
+          <h3>City</h3>
+          <p class="price">$49<small>/month</small></p>
+          <ul>
+            <li><strong>1 city</strong></li>
+            <li>Monday email alert on your saved filters (trades, ZIP codes)</li>
+            <li>New-contractor alert: every new entrant in your trades</li>
+            <li>Momentum movers: who's surging, who's gone quiet</li>
+            <li>Full weekly CSV export: every matching permit with contractor, trade, ZIP, date and description</li>
+          </ul>
+          <a class="btn btn-primary subscribe" data-plan="1city" href="https://buy.stripe.com/7sYaEX9Ag3CPeq9fkN2kw0S">Subscribe: 1 city, $49/mo</a>
+          <p class="plan-note" aria-live="polite"></p>
+        </div>
+        <div class="plan">
+          <h3>Metro</h3>
+          <p class="price">$99<small>/month</small></p>
+          <ul>
+            <li><strong>Up to 3 cities</strong></li>
+            <li>Everything in City</li>
+            <li>Separate trade and ZIP filters for each city</li>
+            <li>One Monday email covering all your cities</li>
+          </ul>
+          <a class="btn btn-primary subscribe" data-plan="3city" href="https://buy.stripe.com/7sY3cvfYEa1d2Hr7Sl2kw0T">Subscribe: 3 cities, $99/mo</a>
+          <p class="plan-note" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="limits" aria-labelledby="limits-title">
+      <h2 id="limits-title">Honest limits</h2>
+      <ul class="limits">
+        <li><strong>Permits are not all the work.</strong> Unpermitted jobs, work outside city limits (suburbs, county land) and work that doesn't need a permit won't show up.</li>
+        <li><strong>Coverage differs by city.</strong> Austin: building, electrical, mechanical, plumbing and driveway permits. Chicago: all building permits, with every listed contractor. NYC: DOB NOW Build initial work permits plus DOB NOW Electrical. Seattle: building, electrical and trade permits. Seattle's building permits rarely name a contractor, so about a quarter of Seattle permits are unattributed.</li>
+        <li><strong>Names are free text.</strong> We merge case, punctuation, LLC/Inc/Co suffixes, d/b/a names and names the city's system cut off, but one company can still appear under two spellings.</li>
+        <li><strong>Trades are inferred.</strong> Cities don't tag a permit "roofing" or "solar". We assign one trade per permit from the permit type, contractor role and description. Big trades are reliable; small ones are directional.</li>
+        <li><strong>Job values are what was declared.</strong> Many permits carry $0 or $1 placeholders, and trade sub-permits usually carry none. We show values only where the city recorded one. They are not revenue.</li>
+        <li><strong>"New" means new to the 12-month record.</strong> A contractor flagged new had no permit in the city in the 11 months before its first one this month. That doesn't always mean a new business.</li>
+        <li><strong>Data lags a few days.</strong> Cities publish permits 1–3 business days after issue, so the most recent days are always a little light.</li>
+        <li><strong>No personal data.</strong> We never show homeowner or property-owner names, owner contact details or street addresses. Only business and licensed-contractor names, ZIP codes and the city's own job descriptions (with phone numbers, emails and addresses removed).</li>
+        <li><strong>Not a licence check or a recommendation.</strong> Verify licences and insurance with your state before you hire anyone.</li>
+      </ul>
+    </section>
+
+    <section class="block faq" id="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">FAQ</h2>
+      <details><summary>Where does the data come from?</summary><p>Only from each city's official open-data portal: Austin (data.austintexas.gov), Chicago (data.cityofchicago.org), New York City (data.cityofnewyork.us, Department of Buildings) and Seattle (data.seattle.gov). We pull issued permits for the last 12 months and refresh every Monday. The exact datasets are listed under each city in the radar.</p></details>
+      <details><summary>How fresh is it?</summary><p>Each city's page shows its own "data as of" date: the latest issue date in that city's feed when we last built. Cities usually publish within 1–3 business days.</p></details>
+      <details><summary>How is momentum worked out?</summary><p>For each contractor we compare permits issued in the last 90 days with the 90 days before that. "Surging" means at least 50% more permits and at least 5 in the last 90 days; "slowing" means at least 15% fewer.</p></details>
+      <details><summary>Why can't I find a contractor?</summary><p>Try a shorter part of the name. Some permits are pulled by the general contractor rather than the trade sub, some by property owners themselves (we never show those), and work outside city limits isn't in the city's data.</p></details>
+      <details><summary>Is this a background or licence check?</summary><p>No. It shows permit activity recorded by the city, nothing more. A busy permit history isn't an endorsement, and an empty one isn't a red flag on its own: check licences, insurance and references too.</p></details>
+      <details><summary>Why these four cities? What about Dallas or San Francisco?</summary><p>We only launch a city when its official feed names the contractor on most permits. Dallas's feed stopped carrying contractor names in 2026. San Francisco moved most new permits to a new system in 2026 whose public data has no contractor field. We re-check both regularly and will add them when the data supports it.</p></details>
+      <details><summary>What do the alert emails look like?</summary><p>Every Monday: a short summary of permits in your trades and ZIPs, new contractors, the biggest movers up and down, and a CSV of every matching permit for the week. Plain text and HTML.</p></details>
+      <details><summary>Can I cancel?</summary><p>Yes. Plans are month to month. Reply to any alert email to cancel before your next billing date.</p></details>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>Contractor Radar</strong> &middot; <!--ASOF-->Data as of 6 Nov 2026 – 7 Nov 2026<!--/ASOF--> &middot; Built from official open data published by the City of Austin, City of Chicago, City of New York and City of Seattle. Not affiliated with or endorsed by any city.</p>
+    <p><a href="app.html">Open the radar</a> &middot; <a href="#plans">Plans</a> &middot; <a href="#limits">Limits</a> &middot; <a href="#faq">FAQ</a></p>
+  </div>
+</footer>
+<script src="assets/home.js?v=20261109T021140" defer></script>
+</body>
+</html>
